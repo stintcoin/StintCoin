@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=StintCoin
+Comment=StintCoin P2P Cryptocurrency
+Comment[fr]=StintCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=StintCoin, eşten eşe kriptografik sanal para birimi
+Exec=stintcoin-qt %u
+Terminal=false
+Type=Application
+Icon=stintcoin128
+MimeType=x-scheme-handler/stintcoin;
+Categories=Office;Finance;

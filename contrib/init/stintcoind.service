@@ -1,0 +1,26 @@
+[Unit]
+Description=StintCoin's distributed currency daemon
+After=network.target
+
+[Service]
+User=stintcoin
+Group=stintcoin
+
+Type=forking
+PIDFile=/var/lib/stintcoind/stintcoind.pid
+
+ExecStart=/usr/bin/stintcoind -daemon -pid=/var/lib/stintcoind/stintcoind.pid \
+          -conf=/etc/stintcoin/stintcoin.conf -datadir=/var/lib/stintcoind
+
+ExecStop=-/usr/bin/stintcoin-cli -conf=/etc/stintcoin/stintcoin.conf \
+         -datadir=/var/lib/stintcoind stop
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

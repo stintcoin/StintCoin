@@ -1,0 +1,20 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource prefix="/translations">
+        <file alias="bg">locale/stintcoin_bg.qm</file>
+        <file alias="de">locale/stintcoin_de.qm</file>
+        <file alias="en">locale/stintcoin_en.qm</file>
+        <file alias="es">locale/stintcoin_es.qm</file>
+        <file alias="fi">locale/stintcoin_fi.qm</file>
+        <file alias="fr">locale/stintcoin_fr.qm</file>
+        <file alias="it">locale/stintcoin_it.qm</file>
+        <file alias="ja">locale/stintcoin_ja.qm</file>
+        <file alias="pl">locale/stintcoin_pl.qm</file>
+        <file alias="pt">locale/stintcoin_pt.qm</file>
+        <file alias="ru">locale/stintcoin_ru.qm</file>
+        <file alias="sk">locale/stintcoin_sk.qm</file>
+        <file alias="sv">locale/stintcoin_sv.qm</file>
+        <file alias="vi">locale/stintcoin_vi.qm</file>
+        <file alias="zh_CN">locale/stintcoin_zh_CN.qm</file>
+        <file alias="zh_TW">locale/stintcoin_zh_TW.qm</file>
+    </qresource>
+</RCC>
