@@ -404,6 +404,8 @@ void CMasternodeMan::DsegUpdate(CNode* pnode)
         }
     }
 
+    if (fDebug) LogPrintf("CMasternodeMan::DsegUpdate() - DSEG we are asking for new list\n");
+
     pnode->PushMessage("dseg", CTxIn());
     int64_t askAgain = GetTime() + MASTERNODES_DSEG_SECONDS;
     mWeAskedForMasternodeList[pnode->addr] = askAgain;
@@ -772,6 +774,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
                         return;
                     }
                 }
+                if (fDebug) LogPrintf("CMasternodeMan::ProcessMessage() - DSEG - giving peer new list\n");
                 int64_t askAgain = GetTime() + MASTERNODES_DSEG_SECONDS;
                 mAskedUsForMasternodeList[pfrom->addr] = askAgain;
             }

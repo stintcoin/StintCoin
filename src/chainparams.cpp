@@ -113,7 +113,7 @@ public:
         pchMessageStart[3] = 0xa6;
         vAlertPubKey = ParseHex("04e7cab58715c9dcd0973e52183cd66b4838b0cdfdfa57e87071054b83be9e67e29df0cc373953f722c1b7bc62637bc4d616524ddf2907c676f2e38ea365b068b5");
         nDefaultPort = 27501;
-        bnProofOfWorkLimit = ~uint256(0) >> 20;
+        bnProofOfWorkLimit = ~uint256(0) >> 1;
 		
         nSubsidyHalvingInterval = 1050000;
         nMaxReorganizationDepth = 100;
@@ -123,7 +123,7 @@ public:
         nMinerThreads = 0;
         nTargetTimespan = 1 * 60;
         nTargetSpacing = 1 * 60;
-        nLastPOWBlock = 500;
+        nLastPOWBlock = 17000;
         nMaturity = 120;
         nMasternodeCountDrift = 20;
         nMasternodeColleteralLimxDev = 3000;
@@ -136,9 +136,9 @@ public:
         assert(hashGenesisBlock == uint256("0x0000074b8bdcc5aedeb5c233c00dd4efde1d5b460f4fc1f05762419e9f908836"));
         assert(genesis.hashMerkleRoot == uint256("0x064c2e11ac09ee45e04a8ccb0136426b5d7406b6edc224b0fbfd0b635f42c589"));
 
-        vSeeds.push_back(CDNSSeedData("seed1.stintcoin.io", "seed1.stintcoin.io"));
-        vSeeds.push_back(CDNSSeedData("seed2.stintcoin.io", "seed2.stintcoin.io"));
-        vSeeds.push_back(CDNSSeedData("seed3.stintcoin.io", "seed3.stintcoin.io"));
+        vSeeds.push_back(CDNSSeedData("seed01.stintcoin.io", "seed01.stintcoin.io"));
+        vSeeds.push_back(CDNSSeedData("seed02.stintcoin.io", "seed02.stintcoin.io"));
+        vSeeds.push_back(CDNSSeedData("seed03.stintcoin.io", "seed03.stintcoin.io"));
 		
         // STINT addresses start with 'S'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 63);

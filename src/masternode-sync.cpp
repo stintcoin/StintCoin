@@ -84,10 +84,13 @@ void CMasternodeSync::Reset()
 
 void CMasternodeSync::AddedMasternodeList(uint256 hash)
 {
+    if (fDebug) LogPrintf("CMasternodeSync::AddedMasternodeList()- hash : %s\n", hash.ToString());
     if (mnodeman.mapSeenMasternodeBroadcast.count(hash)) {
         if (mapSeenSyncMNB[hash] < MASTERNODE_SYNC_THRESHOLD) {
             lastMasternodeList = GetTime();
             mapSeenSyncMNB[hash]++;
+        } else {
+             if (fDebug) LogPrintf("CMasternodeSync::AddedMasternodeList() - FAILED TO ADD LIST - mapSeenSyncMNB has already received\n");
         }
     } else {
         lastMasternodeList = GetTime();
@@ -97,10 +100,13 @@ void CMasternodeSync::AddedMasternodeList(uint256 hash)
 
 void CMasternodeSync::AddedMasternodeWinner(uint256 hash)
 {
+    if (fDebug) LogPrintf("CMasternodeSync::AddedMasternodeWinner()- hash : %s\n", hash.ToString());
     if (masternodePayments.mapMasternodePayeeVotes.count(hash)) {
         if (mapSeenSyncMNW[hash] < MASTERNODE_SYNC_THRESHOLD) {
             lastMasternodeWinner = GetTime();
             mapSeenSyncMNW[hash]++;
+        } else {
+            if (fDebug) LogPrintf("CMasternodeSync::AddedMasternodeWinner() - FAILED TO ADD WINNER - mapSeenSyncMNW has already received\n");
         }
     } else {
         lastMasternodeWinner = GetTime();
@@ -252,7 +258,8 @@ void CMasternodeSync::Process()
         return;
     }
 
-    if (fDebug) LogPrintf("CMasternodeSync::Process() - tick %d RequestedMasternodeAssets %d\n", tick, RequestedMasternodeAssets);
+    if (fDebug)LogPrintf("CMasternodeSync::Process() - tick %d RequestedMasternodeAssets %d\n", tick, RequestedMasternodeAssets);
+    if (fDebug) LogPrintf("CMasternodeSync::Checker() - start: %lld limit: %lld\n", GetTime() - nAssetSyncStarted, MASTERNODE_SYNC_TIMEOUT * 5);
 
     if (RequestedMasternodeAssets == MASTERNODE_SYNC_INITIAL) GetNextAsset();
 
@@ -295,7 +302,7 @@ void CMasternodeSync::Process()
 
         if (pnode->nVersion >= masternodePayments.GetMinMasternodePaymentsProto()) {
             if (RequestedMasternodeAssets == MASTERNODE_SYNC_LIST) {
-                if (fDebug) LogPrintf("CMasternodeSync::Process() - lastMasternodeList %lld (GetTime() - MASTERNODE_SYNC_TIMEOUT) %lld\n", lastMasternodeList, GetTime() - MASTERNODE_SYNC_TIMEOUT);
+                if (fDebug) LogPrintf("CMasternodeSync::Process() - lastMasternodeList %lld (GetTime() - MASTERNODE_SYNC_TIMEOUT) %lld\n", lastMasternodeList, GetTime() - MASTERNODE_SYNC_TIMEOUT * 2);
                 if (lastMasternodeList > 0 && lastMasternodeList < GetTime() - MASTERNODE_SYNC_TIMEOUT * 2 && RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD) { //hasn't received a new item in the last five seconds, so we'll move to the
                     GetNextAsset();
                     return;
@@ -304,6 +311,7 @@ void CMasternodeSync::Process()
                 if (pnode->HasFulfilledRequest("mnsync")) continue;
                 pnode->FulfilledRequest("mnsync");
 
+                if (fDebug)LogPrintf("MASTERNODE_SYNC_LIST checking for timeout %lld > %lld\n", GetTime() - nAssetSyncStarted, MASTERNODE_SYNC_TIMEOUT * 5);
                 // timeout
                 if (lastMasternodeList == 0 &&
                     (RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD * 3 || GetTime() - nAssetSyncStarted > MASTERNODE_SYNC_TIMEOUT * 5)) {
@@ -314,6 +322,7 @@ void CMasternodeSync::Process()
                         lastFailure = GetTime();
                         nCountFailures++;
                     } else {
+                        LogPrintf("CMasternodeSync::Process - SPORK NOT SET - Moving to GetNextAsset()\n");
                         GetNextAsset();
                     }
                     return;
@@ -327,7 +336,7 @@ void CMasternodeSync::Process()
             }
 
             if (RequestedMasternodeAssets == MASTERNODE_SYNC_MNW) {
-                LogPrintf("lastMasternodeWinner = %d\n", lastMasternodeWinner);
+                if (fDebug) LogPrintf("CMasternodeSync::Process() - lastMasternodeWinner %lld (GetTime() - MASTERNODE_SYNC_TIMEOUT) %lld\n", lastMasternodeWinner, GetTime() - MASTERNODE_SYNC_TIMEOUT * 2);
 				if (lastMasternodeWinner > 0 && lastMasternodeWinner < GetTime() - MASTERNODE_SYNC_TIMEOUT * 2 && RequestedMasternodeAttempt >= MASTERNODE_SYNC_THRESHOLD) { //hasn't received a new item in the last five seconds, so we'll move to the
                     GetNextAsset();
                     return;
@@ -350,6 +359,7 @@ void CMasternodeSync::Process()
                         lastFailure = GetTime();
                         nCountFailures++;
                     } else {
+                        LogPrintf("CMasternodeSync::Process - SPORK NOT SET - Moving to GetNextAsset()\n");
                         GetNextAsset();
                     }
                     return;
